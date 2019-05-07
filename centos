@@ -1,0 +1,23 @@
+FROM centos
+
+MAINTAINER Kunal Mehta
+
+ENV JAVA_VERSION 8u212
+ENV BUILD_VERSION b17
+
+RUN yum -y update
+#ADD centos.repo /etc/yum.repos.d/centos-source.repo  
+RUN yum -y install wget 
+
+#ADD wget /usr/bin/wget
+RUN chmod +x /usr/bin/wget
+
+RUN wget https://download.oracle.com/otn/java/jdk/8u212-b10/59066701cf1a433da9770636fbc4c9aa/jdk-8u212-linux-x64.rpm?AuthParam=1557210881_a391d903c8cd8219c5a867283c0669c0 -O /tmp/jdk-8u212-linux-x64.rpm
+RUN cd /tmp && rpm -ivh jdk-8u131-linux-x64.rpm
+
+RUN alternatives --install /usr/bin/java java /usr/java/latest/bin/java 200000
+RUN alternatives --install /usr/bin/javac javac /usr/java/latest/bin/javac 200000
+
+ENV JAVA_HOME /usr/java/latest
+
+RUN rm /tmp/jdk-8u212-linux-x64.rpm
